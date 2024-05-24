@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static 'script/tutors_profile_page.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'styles/profileUpdate.css' %}">
+    <script src="{% static 'script/tutor_profile.js' %}"></script>
+    <script src="{% static 'script/tutor_messages.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'styles/tutors_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/tutor_messages.css' %}">
+    <title>Tutor's - Profile</title>
+</head>
+<body>
+    <div class="flash-container">
+        {% if messages %}
+            {% for message in messages %}
+                {% if forloop.last %}
+                <div class="flash-message {% if message.tags %}flash-{{ message.tags }}{% endif %}">
+                    <p style="font-weight: bold;">{{ message }}</p>
+                    <button class="flash-close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <!-- display cert -->
+    <div class="set_cert_display">
+        <div class="cert_display">
+            <div class="cert_content">
+                <div class="cert_inn">
+                    <p class="close_cert" title="Close">x</p>
+                    <img src="#" alt="" width="100%" height="100%" id="preview_cert">
+                </div>            
+            </div>
+        </div>
+    </div>
+
+    <!-- display cv -->
+    <div class="set_cv_display">
+        <div class="cv_display">
+            <div class="cert_content">
+                <div class="cv_inn">
+                    <p class="close_cv" title="Close">x</p>
+                    <embed id="pdfViewer" width="1000px" height="600px"/>
+                </div>            
+            </div>
+        </div>
+    </div>
+    <div class="background"></div>
+    <div class="content">
+        <div class="content_left">
+            <h3><span class="welcome">Welcome to</span> <span class="lesson_pedia">LessonPedia&nbsp;</span></h3>
+
+            <section class="disciplinary">
+                <p class="active_user">
+                    &nbsp;&nbsp;&nbsp;You signed up as <br><span class="usr"> {{ tutor.username }} </span><br><br>
+                    <p class="confirm">
+                        Ensure to provide a verifiable information on this page as any form of impersonation or false documentation will result in automatic eviction from the platform and necessary legal action.
+                    </p>
+                </p>
+                <p class="assurance">
+                    Information provided on this page is encrypted and protected under the rule of law
+                </p>
+            </section>
+            
+        </div>
+        <div class="profile_regPage_content">
+            <img src="{{ tutor.profile_picture.url}}" class="image_preview" alt="" id="profile_picture_review">
+            <h2 class="profile_header"><center>Profile Registration</center></h2>
+            <form action="{% url 'tutor_profile' %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}              
+              {{ form.errors }}
+              {% if form.errors %}
+                    <div class="error-message">
+                        <p>There were errors in your form:</p>
+                        <ul>
+                            {% for field, error_list in form.errors.items %}
+                                {% for error in error_list %}
+                                    <li>{{ field }}: {{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                    <fieldset class="profile_form"><legend> Bio - Data </legend>
+                        <label for="first_name">First Name</label><br>
+                        {{ form.first_name }}
+                        <div class="flex_me">
+                            <label for="last_name">Last Name </label><br> <label for="others" id="others_label">Others</label>
+                        </div>
+                        {{ form.last_name }}
+                        {{ form.others }}
+                        <div class="nation parallel">
+                           <label class="nation_label" for="nationality">Nationality</label> <label class="state_label" for="state_of_residence">State of Residence </label>
+                        </div>
+                        <div class="nation parallel">
+                            {{ form.nationality }}
+                        {{ form.state_of_residence }}
+                            </div>
+
+                        <div class="flex_me_too">
+                            <label for="residential_address">Residential Address</label> <br><label for="phone_number" id="phone_label">Phone Number</label>
+                        </div>
+                        {{ form.residential_address }}
+                        {{ form.phone_number }}
+                        <div class="flex_me_too">
+                          <label class="gender_label" for="gender">Gender</label><label class="dob_label" for="dob">Date of Birth</label>
+                        </div>
+                            {{ form.gender }}
+                            {{ form.date_of_birth }} 
+                        </fieldset><br>
+                        
+                        <fieldset class="profile_form"><legend> Academic/Employment Details </legend>
+                            <label for="institution_type">Institution Type:</label>
+                            {{ form.institution_type }}
+                            <br>
+                            <label for="institution">Institution Name</label>
+                            {{ form.institution }}
+                             <br>
+                            <label for="dis">Discipline </label><label for="qual" id="position_qual">Qualification</label><label for="degree_class" id="position_cgpa">Result</label>
+                            <section class="disqua">
+                                {{ form.discipline }}
+                                {{ form.highest_qualification }}
+                                {{ form.result }}
+                            </section>
+                            <br>
+                            <label for="area_of_specialization">Specialization (if any)</label><br>
+                            {{ form.area_of_specialization }}
+                            <br>
+                            <label for="empStat">Employment Status </label><label for="employmentStat" id="position_stat">if employed, select option below</label>
+                            {{ form.employment_status }}
+                            {{ form.employment_type }}         
+                        </fieldset><br>
+
+                    <fieldset class="profile_form"><legend> Subject Information </legend>
+                        <div class="subject_form_group">
+                            <label for="subjectName">Enter Primary Subject:</label>
+                            <input type="text" id="subjectName" name="subjectName" required placeholder="Your Core Subject (One)">
+                        </div>
+                        <div class="subject_form_group">
+                            <label for="category">Select Category:</label>
+                            <select id="category" name="category" required>
+                                {% for subject in categories %}
+                                    <option value="{{ subject.name}}">{{ subject.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="subject_form_group">
+                            <label for="proficiency">Select proficiency:</label>
+                            <select id="proficiency" name="proficiency" required>
+                                <option value="" disabled>Select Proficiency</option>
+                                <option value="Beginner" disabled>Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                                <option value="Expert">Expert</option>
+                            </select>
+                        </div>
+                        <div class="subject_form_group">
+                            <label for="teachingExperience">Select teaching experience:</label>
+                            <select id="teachingExperience" name="teachingExperience" required>
+                                <option value="" disabled>Select Experience</option>
+                                <option value="None - New to this">None - New to this</option>
+                                <option value="Less than a year">Less than a year</option>
+                                <option value="Less than 3 years">Less than 3 years</option>
+                                <option value="Less than 5 years">Less than 5 years</option>
+                                <option value="More than 5 years">More than 5 years</option>
+                            </select>
+                        </div>
+                        <div class="subject_form_group">
+                            <label for="price">Enter price per hour:</label>
+                            <input type="number" id="price" name="price_per_hour" min="500" required>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="profile_form"><legend> Uploads </legend>
+                        <label for="pic">Upload profile picture [only .jpg, .jpeg or .png]</label>
+                        <a class="dp_a"> {{ form.profile_picture }} </a><br><br> 
+                                
+                        <label for="cv">Upload CV or Resume [only .pdf]</label>
+                        <p class="preview shiftmore" id="view_cv">Preview</p>
+                        <img class="cv_preview" src="#" alt="" width="100%" height="100%" id="preview_cert">
+
+                           {{ form.cv_id }}
+                           <br><br>
+                        <label for="cert">Upload Certificate (Highest cert only) [only .jpg, .jpeg or .png]</label>
+                        <p class="preview" id="view_cert">Preview</p>
+                        <embed class="cert_preview" width="1000px" height="600px" src="#" type="application/pdf"/>
+
+                        {{ form.highest_qualification_cert }}
+                        <br><br>
+                    </fieldset><br>
+                    <button type="submit" id="save_me">Save and Proceed</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

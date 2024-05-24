@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="shortcut icon" href="{% static 'images/logo/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'styles/admin_dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/11285bfb5b.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="{% static 'script/admin_dashboard.js' %}"></script>
+    <script src="{% static 'script/common.js' %}"></script>
+ 
+    <title>Admin - Dashboard</title>
+</head>
+<body>
+    <!-- display Ajax messages -->
+    <div id="messageDivSuccess"></div>
+    <div id="messageDivError"></div>
+
+    <!--block account tutor-->
+    <div class="set_disable_account">
+        <div class="disable_account" id="disable_account_dialog">
+            <div class="disable_account_content">
+                <p class="disable_close" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Warning!</p>
+                        <p class="disable_action">You are about to indefinitely suspend this tutor's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="blocking">
+                            <label for="reason_for_blocking">Reason for Deactivation</label>
+                            <textarea id="reason_for_blocking_tutor" name="reason_for_blocking" rows="4" cols="60"></textarea>
+                        </div>
+                        <div class="confirm_buttons">
+                            <button class="confirm_remove_tutor" data-tutor-id="">Blocked</button>
+                            <button class="mistake">Cancel</button>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+    <!--suspend account tutor-->
+    <div class="set_suspend_account_tutor">
+        <div class="disable_account" id="disable_account_dialog">
+            <div class="disable_account_content">
+                <p class="disable_close" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Warning!</p>
+                        <p class="disable_action">You are about to suspend this tutor's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="suspending">
+                            <label for="suspension_duration">suspension duration</label>
+                            <input type="number" id="suspension_duration_tutor" name="suspension_duration" min="1">
+                            <label for="reason_for_suspension">Reason for Suspension</label>
+                            <textarea id="reason_for_suspension_tutor" name="reason_for_suspension" rows="2" cols="50"></textarea>
+                        </div>
+                        <div class="confirm_buttons">
+                            <button class="confirm_suspend_tutor" data-tutor-id_suspend="" style="background-color: red;" >Suspend</button>
+                            <button class="mistake">Cancel</button>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+    <!--block acctutor-->
+    <div class="set_disable_account_client">
+        <div class="disable_account">
+            <div class="disable_account_content">
+                <p class="disable_close_client" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Warning!</p>
+                        <p class="disable_action">You are about to indefinitely suspend this learner's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="blocking">
+                            <label for="reason_for_blocking">Reason for Deactivation</label>
+                            <textarea id="reason_for_blocking_client" name="reason_for_blocking" rows="4" cols="60"></textarea>
+                        </div>
+                        <div class="confirm_buttons">
+                            <button class="confirm_remove_client" data-client-id="">Block</button>
+                            <button class="mistake_client">Cancel</button>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+    <!--suspend account client-->
+    <div class="set_suspend_account_client">
+        <div class="disable_account" id="disable_account_dialog">
+            <div class="disable_account_content">
+                <p class="disable_close_client" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Warning!</p>
+                        <p class="disable_action">You are about to suspend this client's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="suspending">
+                            <label for="suspension_duration">suspension duration</label>
+                            <input type="number" id="suspension_duration_client" name="suspension_duration" min="1">
+                            <label for="reason_for_suspension">Reason for Suspension</label>
+                            <textarea id="reason_for_suspension_client" name="reason_for_suspension" rows="2" cols="50"></textarea>
+                        </div>
+                        <div class="confirm_buttons">
+                            <button class="confirm_suspend_client" style="background-color: red;" data-client-id_suspend="">Suspend</button>
+                            <button class="mistake_client">Cancel</button>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+    
+    <!--activate account tutor-->
+    <div class="set_reactivate_account_tutor">
+        <div class="disable_account">
+            <div class="disable_account_content">
+                <p class="disable_close" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Notice!</p>
+                        <p class="disable_action">You are about to reactivate this tutor's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="confirm_buttons">
+                            <button class="confirm_activate_tutor" data-tutor-id_activate="">Reactivate</button>
+                            <button class="mistake">Cancel</button>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+
+    <!--activate account client-->
+    <div class="set_reactivate_account_client">
+        <div class="disable_account">
+            <div class="disable_account_content">
+                <p class="disable_close_client" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Notice!</p>
+                        <p class="disable_action">You are about to reactivate this tutor's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="confirm_buttons">
+                            <button class="confirm_activate_client" data-client-id_activate="">Reactivate</button>
+                            <button class="mistake_client">Cancel</button>
+                        </div>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+    <!--Delete account tutor-->
+    <div class="set_delete_account_tutor">
+        <div class="disable_account">
+            <div class="disable_account_content">
+                <p class="disable_close" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Notice!</p>
+                        <p class="disable_action">You are about to permanently delete this tutor's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="deleting">
+                            <label for="confirm_delete" style="user-select: none;">Please type "CONFIRM DELETE" below to delete</label>
+                            <input type="text" id="confirm_delete_tutor" name="confirm_delete" autocomplete="off">
+                        </div>
+                        <div class="confirm_buttons">
+                            <button class="confirm_delete_tutor" data-tutor-id_delete="">Delete</button>
+                            <button class="mistake">Cancel</button>
+                        </div>
+                        <!-- <center><h3>Temporarily disabled</h3></center> -->
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+    <!--Delete account client-->
+    <div class="set_delete_account_client">
+        <div class="disable_account">
+            <div class="disable_account_content">
+                <p class="disable_close_client" title="close">
+                    x
+                </p>
+                <div class="disable_warning">
+                    <section>
+                        <img src="{% static 'images/icons/warning.png' %}" alt="">
+                    </section>
+                    <div class="disable_warning_box">
+                        <p class="confirm_dialog">Notice!</p>
+                        <p class="disable_action">You are about to permanently delete this client's acccount, Proceed?</p>
+                    </div>
+                    <div class="selections">
+                        <div class="deleting">
+                            <label for="confirm_delete" style="user-select: none;">Please type "CONFIRM DELETE" below to delete</label>
+                            <input type="text" id="confirm_delete_client" name="confirm_delete" autocomplete="off">
+                        </div>
+                        <div class="confirm_buttons">
+                            <button class="confirm_delete_client" data-client-id_delete="">Delete</button>
+                            <button class="mistake_client">Cancel</button>
+                        </div>
+                        <!-- <center><h3>Temporarily disabled</h3></center> -->
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+    
+    <!-- take action tutor -->
+    <div class="set_action_tutor">
+        <div class="activate_action">
+            <div class="action_dialog">
+                <section class="top_action">
+                    <div class="header">
+                        <section class="push_right">
+                            <p class="active_user">Active User: <span class="selected_user">Selected User</span> <span class="close" title="close">X</span></p>
+                            <p class="selected_email">selected email</p>
+                        </section>
+                    <h2>Take Action</h2>
+                        
+                    </div>
+                    <p class="active_admin_user">You are responsible for this action @ <span class="active_admin">AdminUsername</span></p>
+                </section>
+
+                <div class="flex_content">
+                    <div class="action_content">
+                        <div class="action_leftpane">
+                            <p class="action_head">Admin Privilege</p>
+                            <p class="fa-solid fa-street-view"><span class="action_list" id="activate_views">Views</span></p><br>
+                            <p class="fa-solid fa-user-minus"><span class="action_list" id="activate_suspend_tutor">Suspend Account</span></p>
+                            <p class="fa-solid fa-user-xmark"><span class="action_list" id="activate_block">Block Account</span></p>
+                            <p class="fa-solid fa-user"><span class="action_list" id="reactivate_account_tutor">Reactivate Account</span></p>
+                            <p class="fa-solid fa-xmark"><span class="action_list" id="delete_account_tutor">Delete Account</span></p>
+                            <footer class="pedia">
+                                @lessonpedia 
+                            </footer>
+                        </div>
+                    </div>
+                    
+                    <div class="view_container">
+                        <div class="nav_content">
+                            <p class="list_content" id="activate_profile">Profile</p>
+                            <p class="list_content" id="activate_review">Review</p>
+                            <p class="list_content" id="activate_report">Report</p>
+                        </div>
+
+                        <div class="profile_view">
+                            <div class="details">
+
+                                <section class="details_dp">
+                                    <img id="tutor_profile_image" src="{% static 'images/tutors/pass.jpg' %}" alt="">
+                                    <p class="profile_userName">profile userName</p>
+                                </section>
+
+                                <section class="head">
+                                    <h4 class="full_name">Gentle Inyang  <span class="gender">(M)</span></h4>
+                                    <p class="phone_number">08039678842</p>
+                                </section>
+
+                                <div class="set_other_details">
+                                    <section class="other_details">
+                                        <section class="bio_data">
+                                            <fieldset><legend>Residential Address</legend>
+                                                <p class="tag">Address: <p class="value residential_address">24, Anthony village, Ikorodu</p></p>
+                                                <p class="tag">State of Resident/Nationality:</p>
+                                                <section class="state_national">
+                                                    <p class="state state_of_residence">Lagos</p>
+                                                    <p class="national nationality">Nigeria</p>
+                                                </section>                                            
+                                            </fieldset>
+                                        </section><br>
+
+                                        <!-- Tutors details -->
+                                        <div class="set_tutors_details">
+                                            <section class="academics">
+                                                <section class="bio_data">
+                                                    <fieldset><legend>Academic Details</legend>
+                                                        <button class="cv_view">View CV</button>
+                                                        <p class="tag">Institution Attended: <p class="value institution">Iscom University, Benin Republic</p></p>
+                                                        <p class="tag">Specialization/Qualification/Result:</p>
+                                                        <section class="state_national">
+                                                            <p class="state area_of_specialization">Software Engineering</p>
+                                                            <p class="national grade highest_qualification">Msc</p>
+                                                            <p class="national gpa result">4.2</p>
+                                                        </section>
+                                                        
+                                                    </fieldset>
+                                                </section>
+                                            </section><br>
+
+                                            <section class="engagements">
+                                                <section class="bio_data">
+                                                    <fieldset><legend>Engagements</legend>             
+                                                        <p class="tag">Employment/Status:</p>
+                                                        <section class="state_national">
+                                                            <p class="state grade employment_status">Employed</p>
+                                                            <p class="national accepted employment_type">Full time</p>
+                                                        </section>
+                                                        <p class="tag">Availability: <p class="value availability">Hybrid</p></p>
+                                                        <p class="tag">Clients: Total/Accepted/Rejected</p>
+                                                        <section class="state_national">
+                                                            <p class="state total total_clients">Total: 21</p>
+                                                            <p class="national accepted active_clients">Active: 5</p>
+                                                            <p class="national rejected rejected_clients">Rejected: 16</p>
+                                                        </section>
+                                                        <p class="tag">Ranking: <p class="value ranking">Average Rank: 4 stars</p></p>                                                
+                                                    </fieldset>
+                                                </section>
+                                            </section>
+                                        </div>
+
+                                    </section>
+                                </div>
+
+                                <!-- Review page -->
+                                <div class="set_review_details">
+                                    <section class="other_details">
+                                        <center>Review Service in Progress</center>
+
+                                                                                  
+                                    </section>
+                                </div>
+
+                                <!-- Report page -->
+                                <div class="set_report_details set_report_details22" data-tutor-id_report="">
+                                    <section class="other_details">
+                                        <!-- <center>Report Service in Progress</center> -->
+                                        <div class="report_indivdual">
+                                            <div class="tutors_list_content">
+                                                <section class="top">
+                                                    <div class="search">
+                                                        <input type="text" name="" id="" class="extend i_tutor_reports" placeholder="Search report">
+                                                        <button class="search_button">Search</button>
+                                                    </div>
+                                                    <h5 class="allTutors" style="margin: 4px; padding: 2px;">Tutor's Abuse Reports
+                                                    </h5>   
+                                                </section>
+                                            </div>
+                        
+                                            <div class="report_data">
+                                                <table class="tutor_reports_table_list tutor_reports_in">
+                                                    <thead class="table_header">
+                                                        <tr>
+                                                            <th class="t_report_tutor_i" data-column="0">Report ID</th>
+                                                            <th class="t_report_tutor_i" data-column="1">Tutor</th>
+                                                            <th class="t_report_client_i" data-column="2">Target Client ID</th>
+                                                            <th class="t_report_subject_i" data-column="3">Subject</th>
+                                                            <th class="t_report_message_i" data-column="4">Message</th>
+                                                            <th class="t_report_created_i" data-column="5">Created_at</th>
+                                                            <th class="t_report_resolve_i" data-column="6">Resolve Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- Pagination tutor reports-->
+                                        <center>
+                                            <div class="pagination" id="pagination">
+                        
+                                            </div>
+                                        </center>                                                                                 
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- take action client -->
+    <div class="set_action_client">
+        <div class="activate_action">
+            <div class="action_dialog">
+                <section class="top_action">
+                    <div class="header">
+                        <section class="push_right">
+                            <p class="active_user">Active User: <span class="selected_user_client">Selected User</span> <span class="close_client" title="close">X</span></p>
+                            <p class="selected_email_client">selected email</p>
+                        </section>
+                    <h2>Take Action</h2>
+                        
+                    </div>
+                    <p class="active_admin_user">You are responsible for this action @ <span class="active_admin">AdminUsername</span></p>
+                </section>
+
+                <div class="flex_content">
+                    <div class="action_content">
+                        <div class="action_leftpane">
+                            <p class="action_head">Admin Privilege</p>
+                            <p class="fa-solid fa-street-view"><span class="action_list" id="activate_views">Views</span></p><br>
+                            <p class="fa-solid fa-user-minus"><span class="action_list" id="activate_suspend_client">Suspend Account</span></p>
+                            <p class="fa-solid fa-user-xmark"><span class="action_list" id="activate_block_client">Block Account</span></p>
+                            <p class="fa-solid fa-user"><span class="action_list" id="reactivate_account_client">Reactivate Account</span></p>
+                            <p class="fa-solid fa-xmark"><span class="action_list" id="delete_account_client">Delete Account</span></p>
+                            <footer class="pedia">
+                                @lessonpedia 
+                            </footer>
+                        </div>
+                    </div>
+                    
+                    <div class="view_container">
+                        <div class="nav_content">
+                            <p class="list_content" id="activate_profile_client">Profile</p>
+                            <p class="list_content" id="activate_review_client">Review</p>
+                            <p class="list_content" id="activate_report_client">Report</p>
+                        </div>
+
+                        <div class="profile_view">
+                            <div class="details">
+
+                                <section class="details_dp">
+                                    <img id="client_profile_image" src="{% static 'images/tutors/pass.jpg' %}" alt="">
+                                    <p class="profile_userName_client">profile userName</p>
+                                </section>
+
+                                <section class="head">
+                                    <h4 class="full_name_client">firstname lastname  <span class="gender_client">(M/F)</span></h4>
+                                    <p class="phone_number_client">080XXXXXXXX</p>
+                                </section>
+
+                                <div class="set_other_details_client">
+                                    <section class="other_details">
+                                        <section class="bio_data">
+                                            <fieldset><legend>Residential Address</legend>
+                                                <p class="tag">Address: <p class="value residential_address_client">24, Anthony village, Ikorodu</p></p>
+                                                <p class="tag">State of Resident/Nationality:</p>
+                                                <section class="state_national">
+                                                    <p class="state state_of_residence_client">Lagos</p>
+                                                    <p class="national nationality_client">Nigeria</p>
+                                                </section>                                            
+                                            </fieldset>
+                                        </section><br>
+
+                                        <!-- Client details -->
+                                        <div class="set_tutors_details">
+                                            <section class="academics">
+                                                <section class="bio_data">
+                                                    <fieldset><legend>Other Details</legend>
+                                                        <!-- <button class="cv_view">View CV</button> -->
+                                                        <p class="tag">DOB: <p class="value date_of_birth_client">Iscom University, Benin Republic</p></p>
+                                                        <p class="tag">Educational_Level/null/null/</p>
+                                                        <section class="state_national">
+                                                            <p class="state educational_level_client">null</p>
+                                                            <p class="national grade highest_qualification_client">null</p>
+                                                            <p class="national gpa_client">null</p>
+                                                        </section>
+                                                        
+                                                    </fieldset>
+                                                </section>
+                                            </section><br>
+
+                                            <section class="engagements">
+                                                <section class="bio_data">
+                                                    <fieldset><legend>Engagements</legend>             
+                                                        <p class="tag">Employment/Status:</p>
+                                                        <section class="state_national">
+                                                            <p class="state grade employment_status">Employed</p>
+                                                            <p class="national accepted employment_type">Full time</p>
+                                                        </section>
+                                                        <p class="tag">Availability: <p class="value availability">Hybrid</p></p>
+                                                        <p class="tag">Clients: Total/Accepted/Rejected</p>
+                                                        <section class="state_national">
+                                                            <p class="state total total_clients">Total: 21</p>
+                                                            <p class="national accepted active_clients">Active: 5</p>
+                                                            <p class="national rejected rejected_clients">Rejected: 16</p>
+                                                        </section>
+                                                        <p class="tag">Active Tutors: <p class="value ranking tutor_client">Tutors List</p></p>                                                
+                                                    </fieldset>
+                                                </section>
+                                            </section>
+                                        </div>
+                                    </section>
+                                </div>
+
+                                <!-- Review page -->
+                                <div class="set_review_details_client">
+                                    <section class="other_details">
+                                        <center>Review Service in Progress</center>                                          
+                                    </section>
+                                </div>
+
+                                <!-- Report page -->
+                                <div class="set_report_details_client" data-client-id_report="">
+                                    <section class="other_details">
+                                        <!-- <center>Report Service in Progress</center> -->
+                                        <div class="report_indivdual">
+                                            <div class="clients_list_content">
+                                                <section class="top">
+                                                    <div class="search">
+                                                        <input type="text" name="" id="" class="extend i_client_reports" placeholder="Search report">
+                                                        <button class="search_button">Search</button>
+                                                    </div>
+                                                    <h5 class="allTutors" style="margin: 4px; padding: 2px;">Client's Abuse Reports
+                                                    </h5>   
+                                                </section>
+                                            </div>
+                        
+                                            <div class="report_data">
+                                                <table class="client_reports_table_list client_reports_in">
+                                                    <thead class="table_header">
+                                                        <tr>
+                                                            <th class="c_report_id" data-column="0">Report ID</th>
+                                                            <th class="c_report_client" data-column="1">Client</th>
+                                                            <th class="c_report_tutor" data-column="2">Target Tutor ID</th>
+                                                            <th class="c_report_subject" data-column="3">Subject</th>
+                                                            <th class="c_report_message" data-column="4">Message</th>
+                                                            <th class="c_report_created" data-column="5">Created_at</th>
+                                                            <th class="c_report_resolve" data-column="6">Resolve Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- Pagination tutor reports-->
+                                        <center>
+                                            <div class="pagination" id="pagination">
+                        
+                                            </div>
+                                        </center>                                                                                 
+                                    </section>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+
+    <!-- set_report_tutor -->
+    <div class="set_report_tutor">
+        <div class="disable_account" id="disable_account_dialog">
+            <div class="disable_report_content">
+                <p class="disable_close_reports" title="close">
+                    x
+                </p>
+                <div class="report_dialogue">
+                    <section class="report_section">
+                        <div class="report_ids">
+                            <center>
+                                <p class="reports_id">Report ID: &nbsp;</p><p class="t_report_id">1</p>
+                                <p class="reports_id">&nbsp;&nbsp;&nbsp;Tutor ID:&nbsp;</p><p class="t_tutor_id">2</p>
+                                <p class="reports_id">&nbsp;&nbsp;&nbsp;Reported Client ID:&nbsp;</p><p class="t_client_id">1</p>
+                            </center>
+                        </div>
+                        <div class="reports_subject_n_message">
+                            <div class="report_subject">
+                                <p class="subject_block">Report Subject:</p>
+                                <p class="t_subject">hihi</p>
+                            </div>
+                            <div class="report_message">
+                                <p class="message_block">Report Message:</p>
+                                <p class="t_message_t">wahala wahala wahala wahala wahala wahala wahajfdflkendf fjkvbs vjv , erfjvfnv ejv fvmwnv wmkvwm vwkjnrv wervkjwnv wvmkw vwcmw vikkr vfvknrv ernflvm;vrke;rverm veohrvkempokjkovne vrnemv okwejvrlsn vkjdrnvplems;vla
+                                    jcksflsjfls;fdl kndlc  skns ,csjncm,s dcksmc snseck[psvcms vjibsv sovs vsjbvsmplsv sbvosmvl s vkpsvk svbis vcsmplmskm vsj bvkjs cpskjvk dsv si ,smcls vkn shi vsk sjs dnv sibvlspoc svkjbsnlsmcd[svkm skn visb vkms vpsmvlk sijvsm vlsknvpsn vsvs\s
+                                     oscskvnlsnvs lkndcs cnose'dmc sbm pakc msnvcpsjefckjsbv sjnm vckosjpm mksdnc ,sopcvsl, cmnjosc ,ncv sv s cjlsncm we;cksv c,snocs
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="message_selections">
+                        <div class="message_buttons">
+                            <button class="t_send_tutor">Message Tutor</button>
+                            <button class="t_send_client">Message Client</button>
+                        </div>
+                        <center>
+                        <div class="t_message_box_t" style="display: none;">
+                            <textarea name="tutor_message_t" id="" cols="70" rows="5" placeholder="Send tutor a message" class="t_send_message_t"></textarea>
+                            <button class="send_tutor_message_t">Send</button>
+                        </div>
+                        </center>
+                        <center>
+                        <div class="t_message_box_c" style="display: none;">
+                            <textarea name="client_message_t" id="" cols="70" rows="5" placeholder="Send client a message" class="t_send_message_c"></textarea>
+                            <button class="send_client_message_t" style="background-color: gray;">Send</button>
+                        </div>
+                        </center>
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+    <!-- set_report_client -->
+    <div class="set_report_client" style="display: none;">
+        <div class="disable_account" id="disable_account_dialog">
+            <div class="disable_report_content">
+                <p class="disable_close_reports" title="close">
+                    x
+                </p>
+                <div class="report_dialogue">
+                    <section class="report_section">
+                        <div class="report_ids">
+                            <center>
+                                <p class="reports_id">Report ID: &nbsp;</p><p class="c_report_id">1</p>
+                                <p class="reports_id">&nbsp;&nbsp;&nbsp;Tutor ID:&nbsp;</p><p class="c_tutor_id">2</p>
+                                <p class="reports_id">&nbsp;&nbsp;&nbsp;Reported Client ID:&nbsp;</p><p class="c_client_id">1</p>
+                            </center>
+                        </div>
+                        <div class="reports_subject_n_message">
+                            <div class="report_subject">
+                                <p class="subject_block">Report Subject:</p>
+                                <p class="c_subject">hihi</p>
+                            </div>
+                            <div class="report_message">
+                                <p class="message_block">Report Message:</p>
+                                <p class="c_message_c">wahala wahala wahala wahala wahala wahala wahajfdflkendf fjkvbs vjv , erfjvfnv ejv fvmwnv wmkvwm vwkjnrv wervkjwnv wvmkw vwcmw vikkr vfvknrv ernflvm;vrke;rverm veohrvkempokjkovne vrnemv okwejvrlsn vkjdrnvplems;vla
+                                    jcksflsjfls;fdl kndlc  skns ,csjncm,s dcksmc snseck[psvcms vjibsv sovs vsjbvsmplsv sbvosmvl s vkpsvk svbis vcsmplmskm vsj bvkjs cpskjvk dsv si ,smcls vkn shi vsk sjs dnv sibvlspoc svkjbsnlsmcd[svkm skn visb vkms vpsmvlk sijvsm vlsknvpsn vsvs\s
+                                     oscskvnlsnvs lkndcs cnose'dmc sbm pakc msnvcpsjefckjsbv sjnm vckosjpm mksdnc ,sopcvsl, cmnjosc ,ncv sv s cjlsncm we;cksv c,snocs
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="message_selections">
+                        <div class="message_buttons">
+                            <button class="c_send_client">Message Client</button>
+                            <button class="c_send_tutor">Message Tutor</button>
+                        </div>
+                        <center>
+                            <div class="c_message_box_c" style="display: none;">
+                                <textarea name="client_message_c" id="" cols="70" rows="5" placeholder="Send client a message" class="c_send_message_c"></textarea>
+                                <button class="send_client_message_c" style="background-color: gray;">Send</button>
+                            </div>
+                        </center>                        
+                        <center>
+                            <div class="c_message_box_t" style="display: none;">
+                                <textarea name="tutor_message_c" id="" cols="70" rows="5" placeholder="Send tutor a message" class="c_send_message_t"></textarea>
+                                <button class="send_tutor_message_c">Send</button>
+                            </div>
+                        </center>
+
+                    </div>
+                </div>           
+            </div>
+        </div>
+    </div>
+
+
+    <div class="admin_dash">
+        <div class="leftpane">
+            <div class="leftpane_content">
+                <h2 class="dashboard_header"><img src="{% static 'images/icons/dashboard.png' %}" width="20px" alt=""> &nbsp;Dashboard</h2><br>
+                <p class="fa-solid fa-chalkboard-user"><span class="dashboard_list" id="set_tutor"> &nbsp; Tutor</span></p><br><br>
+                <p class="fa-brands fa-leanpub"><span class="dashboard_list" id="set_learner">&nbsp; &nbsp; Learners</span></p><br><br>
+                <div class="dropdownReports">
+                    <p class="fa-solid fa-file-import dropbtnReports"><span class="dashboard_list"><span class="report_check fa-solid fa-envelope" style="display: none; color: red;"></span>&nbsp; &nbsp;  Reports</span></p>
+                    <ol class="dropdown-contentReports">
+                        <li class="" id="set_tutor_report" data-t_report_check="" ><span class="fa-solid fa-envelope t_report_check" style="display: none; color: red;"></span>&nbsp; &nbsp; Tutor Reports</li>
+                        <li class="" id="set_client_report" data-c_report_check=""><span class="fa-solid fa-envelope c_report_check" style="display: none; color: red;"></span>&nbsp; &nbsp; Client Reports</li>  
+                    </ol>
+                </div><br><br>
+                <p class="fa-solid fa-money-bill-transfer"><span class="dashboard_list" id="set_transactions">&nbsp; &nbsp; Transactions</span></p><br><br>
+                <p class="fa-solid fa-wrench fa-rotate-0"><span class="dashboard_list" id="set_settings">&nbsp; Settings</span></p>
+            </div>
+            <div class="admin_basic_profile">
+                <img src="{% static 'images/tutors/pass.jpg' %}" alt="">
+                <p>Active Admin</p>
+            </div>
+        </div>
+        
+        <!-- Tutors display -->
+        <div class="activate_tutors">
+            <div class="admin_right">
+                <h4 class="hello_admin">  
+                    Hello, <span class="admin_username" id="admin_username">Admin1
+
+                    </span>
+                    <p class="logout"><a href="{% url 'app_admin_logout' %}">Logout</a></p>
+                </h4>
+                <div class="admin_right_top">
+                    <section class="content">
+                        <img src="{% static 'images/icons/allTutors.png' %}" alt="">
+                        <section class="inner_content">
+                            <p class="top validate">Total Tutors</p>
+                            <p class="total_registered" id="tutorCount">5,200</p>
+                        </section>
+                    </section>
+
+                    <section class="content">
+                        <img src="{% static 'images/icons/active.png' %}" alt="">
+                        <section class="inner_content">
+                            <p class="top">Active</p>
+                            <p class="total_registered" id="activeTutors">400</p>
+                        </section>
+                    </section>
+
+                    <section class="content">
+                        <img src="{% static 'images/icons/inactive.png' %}" alt="">
+                        <section class="inner_content">
+                            <p class="top">Inactive</p>
+                            <p class="total_registered" id="inactiveTutors">230</p>
+                        </section>
+                    </section>
+                </div>
+                <br>
+
+                <div class="tutors_list" >
+                    <div class="tutors_list_content">
+                        <section class="top">
+                            <div class="search">
+                                <input type="text" name="" id="" class="extend tutor_search" placeholder="Search tutor">
+                                <button class="search_button search_button_tutor">Search</button>
+                            </div>
+                            <h3 class="allTutors">All Tutors 
+                                <!-- <span class="sort">Sort by:
+                                    <select name="" id="">
+                                        <option value="">Newest</option>
+                                        <option value="">Oldest</option>
+                                        <option value="">Active</option>
+                                        <option value="">Inactive</option>
+                                        <option value="">Ascending</option>
+                                        <option value="">Descending</option>
+                                    </select>
+                                </span> -->
+                            </h3> 
+                                    
+                        </section>
+                    </div>
+
+                    <div class="all_data">
+                        <table class="tutor_table_list" >
+                            <thead class="table_header">
+                                <tr>
+                                    <th class="sortUserID" data-column="0">ID</th>
+                                    <th class="sortUserName" data-column="1">UserName</th>
+                                    <th class="sortEmail" data-column="2">Email</th>
+                                    <th class="sortEmail" data-column="3">Accessment Score</th>
+                                    <th class="sortEngagement" data-column="4">Active Contracts</th>
+                                    <th class="sortQualification" data-column="5">Qualification</th>
+                                    <th class="sortStatus" data-column="6">Status</th>
+                                    <th class="sortJoinDate" data-column="7">Join Date</th>
+                                    <th class="sortAdminAction" data-column="8">Admin Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tutor in tutors %}
+                                <tr>
+                                    <td class="user_ID">{{ tutor.id }}</td>
+                                    <td class="user_name">{{ tutor.username }}</td>
+                                    <td class="user_email">{{ tutor.email }}</td>
+                                    <td>{{ tutor.quiz_result }}</td>
+                                    <td>{{ tutor.active_contract_count }}</td>
+                                    <td>{{ tutor.highest_qualification }}</td>
+                                    <td><button class="check_status" data-active="{{ tutor.is_active }}">{{ tutor.is_active }}</button></td>
+                                    <td>{{ tutor.created_at}}</td>
+                                    <td>
+                                        <button class="action" 
+                                            data-tutor='{
+                                                "id": "{{ tutor.id }}",
+                                                "first_name": "{{ tutor.first_name|default:"null" }}",
+                                                "last_name": "{{ tutor.last_name|default:"null" }}",
+                                                "username": "{{ tutor.username }}",
+                                                "is_active": "{{ tutor.is_active }}",
+                                                "last_login": "{{ tutor.last_login|default:"null" }}",
+                                                "reviews_id": "{{ tutor.reviews_id|default:"null" }}",
+                                                "email": "{{ tutor.email }}",
+                                                "highest_qualification": "{{ tutor.highest_qualification }}",
+                                                "status": "{{ tutor.status|default:"null" }}",
+                                                "created_at": "{{ tutor.created_at }}",
+                                                "date_of_birth": "{{ tutor.date_of_birth|default:"null" }}",
+                                                "area_of_specialization": "{{ tutor.area_of_specialization }}",
+                                                "profile_picture": "{{ tutor.profile_picture.url }}",
+                                                "phone_number": "{{ tutor.phone_number|default:"null" }}",
+                                                "gender": "{{ tutor.gender|default:"null" }}",
+                                                "employment_status": "{{ tutor.employment_status|default:"null" }}",
+                                                "employment_type": "{{ tutor.employment_type|default:"null" }}",
+                                                "residential_address": "{{ tutor.residential_address|default:"null" }}",
+                                                "state_of_residence": "{{ tutor.state_of_residence|default:"null" }}",
+                                                "lga_resident": "{{ tutor.lga_resident|default:"null" }}",
+                                                "nationality": "{{ tutor.nationality|default:"null" }}",
+                                                "personal_statement": "{{ tutor.personal_statement|default:"null" }}",
+                                                "institution": "{{ tutor.institution|default:"null" }}",
+                                                "institution_type": "{{ tutor.institution_type|default:"null" }}",
+                                                "result": "{{ tutor.result|default:"null" }}",
+                                                "discipline": "{{ tutor.discipline|default:"null" }}",
+                                                "others": "{{ tutor.others|default:"null" }}",
+                                                "availability": "{{ tutor.availability|default:"null" }}",
+                                                "working_hours": "{{ tutor.working_hours|default:"null" }}",
+                                                "cv_id": "{{ tutor.cv_id|default:"null" }}",
+                                                "active_contract_count": "{{ tutor.active_contract_count|default:"null" }}",
+                                                "total_clients": "{{ tutor.total_clients|default:"null" }}",
+                                                "rejected_clients": "{{ tutor.rejected_clients|default:"null" }}",
+                                                "reviews_id": "{{ tutor.reviews_id|default:"null" }}",
+                                                "is_suspended": "{{ tutor.is_suspended }}",
+                                                "is_blocked": "{{ tutor.is_blocked }}",
+                                                "rank": "{{ tutor.rank|default:"null" }}",
+                                                "total_ratings": "{{ tutor.total_ratings|default:"null" }}",
+                                                "accumulated_rating": "{{ tutor.accumulated_rating|default:"null" }}",
+                                                "is_suspended_admin": "{{ tutor.is_suspended_admin }}",
+                                                "is_blocked_admin": "{{ tutor.is_blocked_admin }}",
+                                                "suspended_at_admin": "{{ tutor.suspended_at_admin|default:"null" }}",
+                                                "blocked_at_admin": "{{ tutor.blocked_at_admin|default:"null" }}",
+                                                "suspension_duration_admin": "{{ tutor.suspension_duration_admin|default:"null" }}",
+                                                "suspension_reason_admin": "{{ tutor.suspension_reason_admin|default:"null" }}",
+                                                "block_reason_admin": "{{ tutor.block_reason_admin|default:"null" }}",
+                                                "quiz_result": "{{ tutor.quiz_result|default:"null" }}",
+                                                "quiz_count": "{{ tutor.quiz_count|default:"null" }}",
+                                                "certificate": "{{ tutor.certificate|default:"null" }}",
+
+                                                "updated_at": "{{ tutor.updated_at }}",
+                                                "groups": "{{ tutor.groups|default:"[]" }}"
+                                            }'>Take action
+                                        </button>
+                                    </td>
+                                    
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div> 
+                <!-- Pagination tutor -->
+                <center>
+                    <div class="pagination" id="pagination">
+                        <button id="tutorFirstPage">First</button>
+                        <button id="tutorPrevPage">Previous</button>
+                        <span id="tutorPageNumbers"></span>
+                        <button id="tutorNextPage">Next</button>
+                        <button id="tutorLastPage">Last</button>
+                        <button id="tutorShowAll">All</button>
+                    </div>
+                </center>
+            </div>
+        </div>
+
+        <!-- learners display -->
+        <div class="activate_learners">
+            <div class="admin_right">
+                <h4 class="hello_admin">  
+                    Hello, <span class="admin_username">{{ request.user.username }}</span>
+
+                    <p class="logout"><a href="{% url 'app_admin_logout' %}">Logout</a></p>
+                </h4>
+                <div class="admin_right_top">
+                    <section class="content">
+                        <img src="{% static 'images/icons/allTutors.png' %}" alt="">
+                        <section class="inner_content">
+                            <p class="top validate">Total Clients</p>
+                            <p class="total_registered" id="clientCount">5,200</p>
+                        </section>
+                    </section>
+
+                    <section class="content">
+                        <img src="{% static 'images/icons/active.png' %}" alt="">
+                        <section class="inner_content">
+                            <p class="top">Active</p>
+                            <p class="total_registered" id="activeClient">400</p>
+                        </section>
+                    </section>
+
+                    <section class="content">
+                        <img src="{% static 'images/icons/inactive.png' %}" alt="">
+                        <section class="inner_content">
+                            <p class="top">Inactive</p>
+                            <p class="total_registered" id="inactiveClients">230</p>
+                        </section>
+                    </section>
+                </div>
+                <br>
+
+                <div class="tutors_list">
+                    <div class="tutors_list_content">
+                        <section class="top">
+                            <div class="search">
+                                <input type="text" name="" id="" class="extend client_search" placeholder="Search tutor">
+                                <button class="search_button search_button_client">Search</button>
+                            </div>
+                            <h3 class="allTutors">All Learners 
+                                <!-- <span class="sort">Sort by:
+                                    <select name="" id="">
+                                        <option value="">Newest</option>
+                                        <option value="">Oldest</option>
+                                        <option value="">Active</option>
+                                        <option value="">Inactive</option>
+                                        <option value="">Ascending</option>
+                                        <option value="">Descending</option>
+                                    </select>
+                                </span> -->
+                            </h3> 
+                                    
+                        </section>
+                    </div>
+
+                    <div class="all_data">
+                        <table class="learner_table_list">
+                            <thead class="table_header_learner">
+                                <tr>
+                                    <th class="sortUserIDL" data-column="0">ID</th>
+                                    <th class="sortUserNameL" data-column="1">UserName</th>
+                                    <th class="sortEmailL" data-column="2">Email</th>
+                                    <th class="sortEmailL" data-column="3">Gender</th>
+                                    <th class="sortEngagementL" data-column="4">Educational_level</th>
+                                    <th class="sortQualificationL" data-column="5">Status</th>
+                                    <th class="sortStatusL" data-column="6">Last login</th>
+                                    <th class="sortJoinDateL" data-column="7">Date joined</th>
+                                    <th class="sortAdminActionL" data-column="8">Admin Action</th>
+                                </tr>
+                            </thead>
+                            {% for client in clients %}
+                                <tr>
+                                    <td class="user_ID">{{ client.id }}</td>
+                                    <td class="user_name">{{ client.username }}</td>
+                                    <td class="user_email">{{ client.email }}</td>
+                                    <td>{{ client.gender }}</td>
+                                    <td>{{ client.educational_level }}</td>
+                                    <td><button class="check_status_client" data-active_client="{{ client.is_active }}">{{ client.is_active }}</button></td>
+                                    <td>{{ client.last_login }}</td>
+                                    <td>{{ client.created_at }}</td>
+                                    <td>
+                                        <button class="action_client"
+                                            data-client='{
+                                                "id": "{{ client.id }}",
+                                                "first_name": "{{ client.first_name|default:"null" }}",
+                                                "last_name": "{{ client.last_name|default:"null" }}",
+                                                "username": "{{ client.username }}",
+                                                "is_active": "{{ client.is_active }}",
+                                                "last_login": "{{ client.last_login|default:"null" }}",
+                                                "email": "{{ client.email }}",
+                                                "date_of_birth": "{{ client.date_of_birth|default:"null" }}",
+                                                "created_at": "{{ client.created_at }}",
+                                                "profile_picture": "{{ client.profile_picture.url }}",
+                                                "phone_number": "{{ client.phone_number|default:"null" }}",
+                                                "gender": "{{ client.gender|default:"null" }}",
+                                                "state_of_residence": "{{ client.state_of_residence|default:"null" }}",
+                                                "nationality": "{{ client.nationality|default:"null" }}",
+                                                "residential_address": "{{ client.residential_address|default:"null" }}",
+                                                "educational_level": "{{ client.educational_level|default:"null" }}",
+                                                "updated_at": "{{ client.updated_at }}",
+                                                "is_suspended_admin": "{{ tutor.is_suspended_admin }}",
+                                                "is_blocked_admin": "{{ tutor.is_blocked_admin }}",
+                                                "suspended_at_admin": "{{ tutor.suspended_at_admin|default:"null" }}",
+                                                "blocked_at_admin": "{{ tutor.blocked_at_admin|default:"null" }}",
+                                                "suspension_duration_admin": "{{ tutor.suspension_duration_admin|default:"null" }}",
+                                                "suspension_reason_admin": "{{ tutor.suspension_reason_admin|default:"null" }}",
+                                                "block_reason_admin": "{{ tutor.block_reason_admin|default:"null" }}",
+                                                "tutor": "{{ tutor.tutor|default:"[]" }}",
+                                                "groups": "{{ tutor.groups|default:"[]" }}"
+                                            }'>Take action
+                                        </button>
+                                    </td>
+                                    
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Pagination client -->
+                <center>
+                    <div class="pagination" id="pagination">
+                        <button id="clientFirstPage">First</button>
+                        <button id="clientPrevPage">Previous</button>
+                        <span id="clientPageNumbers"></span>
+                        <button id="clientNextPage">Next</button>
+                        <button id="clientLastPage">Last</button>
+                        <button id="clientShowAll">All</button>
+                    </div>
+                </center>
+                
+            </div>
+        </div>
+
+        <!-- Reports display -->
+
+        <!-- tutor reports -->
+        <div class="tutor_report">
+            <div class="admin_right">
+                <h4 class="hello_admin">  
+                    Hello, <span class="admin_username">{{ request.user.username }}</span>
+
+                    <p class="logout"><a href="{% url 'app_admin_logout' %}">Logout</a></p>
+                </h4>
+                <br>
+
+                <div class="tutors_list">
+                    <div class="tutors_list_content">
+                        <section class="top">
+                            <div class="search">
+                                <input type="text" name="" id="" class="extend tutor_search_report" placeholder="Search Report">
+                                <button class="search_button search_button_tutor_report">Search</button>
+                            </div>
+                            <h3 class="allTutors">Tutors Abuse Reports
+                            </h3>   
+                        </section>
+                    </div>
+
+                    <div class="all_data">
+                        <table class="tutor_reports_table_list tutor_reports">
+                            <thead class="table_header">
+                                <tr>
+                                    <th class="t_report_tutor" data-column="0">Report ID</th>
+                                    <th class="t_report_tutor" data-column="1">Tutor</th>
+                                    <th class="t_report_client" data-column="2">Target Client ID</th>
+                                    <th class="t_report_subject" data-column="3">Subject</th>
+                                    <th class="t_report_message" data-column="4">Message</th>
+                                    <th class="t_report_created" data-column="5">Created_at</th>
+                                    <th class="t_report_resolve" data-column="6">Resolve Status</th>
+                                    <th class="t_report_date_resolved" data-column="7">Date Resolved</th>
+                                    <th class="t_report_view" style="border-bottom: 1px solid gray;" data-column="8">View</th>
+                                </tr>
+                            </thead>
+                            <tbody>   
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Pagination tutor reports-->
+                <center>
+                    <div class="pagination" id="pagination">
+
+                    </div>
+                </center>
+                
+            </div>
+        </div>
+
+        <!-- client reports -->
+        <div class="client_report">
+            <!-- <center><h4 style="color: white; font-size: larger; margin-top: 200px;">Active development in progress</h4></center> -->
+            <div class="admin_right">
+                <h4 class="hello_admin">  
+                    Hello, <span class="admin_username">{{ request.user.username }}</span>
+
+                    <p class="logout"><a href="{% url 'app_admin_logout' %}">Logout</a></p>
+                </h4>
+                <br>
+
+                <div class="tutors_list">
+                    <div class="tutors_list_content">
+                        <section class="top">
+                            <div class="search">
+                                <input type="text" name="" id="" class="extend client_search_report" placeholder="Search Report">
+                                <button class="search_button search_button_client_report">Search</button>
+                            </div>
+                            <h3 class="allTutors">Clients Abuse Reports
+                            </h3>   
+                        </section>
+                    </div>
+
+                    <div class="all_data">
+                        <table class="client_reports_table_list client_reports">
+                            <thead class="table_header_learner">
+                                <tr>
+                                    <th class="c_report_id" data-column="0">Report ID</th>
+                                    <th class="c_report_client" data-column="1">Client</th>
+                                    <th class="c_report_tutor" data-column="2">Target Tutor ID</th>
+                                    <th class="c_report_subject" data-column="3">Subject</th>
+                                    <th class="c_report_message" data-column="4">Message</th>
+                                    <th class="c_report_created" data-column="5">Created_at</th>
+                                    <th class="c_report_resolve" data-column="6">Resolve Status</th>
+                                    <th class="c_report_date_resolved" data-column="7">Date Resolved</th>
+                                    <th class="c_report_view" data-column="8" style="border-bottom: 1px solid gray;" >View</th>
+                                </tr>
+                            </thead>
+                            <tbody>  
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Pagination client reports -->
+                <center>
+                    <div class="pagination" id="pagination">
+
+                    </div>
+                </center>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
